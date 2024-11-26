@@ -19,7 +19,7 @@ This project is a Python-based application designed to analyze particles in an i
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/AleCornejoR/particle-proximity-distribution.git
+   git clone https://github.com/AleCornejoR/particle-proxy-dist.git
    cd particle-proximity-distribution
    ```
 
