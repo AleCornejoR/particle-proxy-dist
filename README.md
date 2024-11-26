@@ -1,18 +1,47 @@
 # Particle Analysis Project
 
-This project is a Python-based application designed to analyze particles in an image. It includes functionalities for particle detection, visualization, and calculation of metrics such as the closest pair of particles. Additionally, the application now supports generating a mesh of triangles between detected particles using Delaunay triangulation.
+The **Particle Analysis Project** is a Python-based application designed to automate the process of detecting, analyzing, and visualizing particles in images. It provides a set of tools for particle detection using advanced image processing techniques, calculates relevant metrics such as the closest pair of particles, and visualizes the results in intuitive plots. The project leverages the power of libraries such as OpenCV, NumPy, SciPy, and Matplotlib to perform tasks like image binarization, contour detection, and Delaunay triangulation. This makes it ideal for applications in scientific analysis, material science, and medical image processing, where particle detection and measurement are essential.
+
+The project is organized in a modular way to ensure easy integration into other systems. It includes functionalities to process multiple sample images, visualize particle distributions, and calculate distances between particles. This can be useful in fields such as microscopy, material analysis, or any area where particle tracking is crucial.
+
+Key highlights include:
+- **Customizable Image Preprocessing**: Allows for adjustments to enhance the detection of particles in varying lighting conditions.
+- **Particle Detection**: Automatically detects particles based on contours and centroid calculation.
+- **Distance Calculation**: Computes the closest pair of particles and visualizes the result.
+- **Triangular Mesh Visualization**: Uses Delaunay triangulation to visualize the relationships between particles in a mesh format.
+- **Scalability**: Easily extendable to handle new data formats, more complex images, or additional particle metrics.
 
 ---
 
 ## Features
 
-- **Particle Detection:** Detect particles using contours and centroids.
-- **Visualization:** 
-  - Plot all detected particles and their centroids.
-  - Highlight the closest pair of particles and draw a line between them (optional).
-  - Generate and visualize a mesh of triangles connecting all particles (optional).
-- **Metrics Calculation:** Find the closest pair of particles based on their distances.
-- **Extensibility:** Modular design with `Particle` and `ParticleCalculator` classes for easy integration into other projects.
+- **Particle Detection**:
+  - Detects particles in images through contour detection and centroid calculation.
+  - Provides preprocessing options like Gaussian blur and CLAHE (Contrast Limited Adaptive Histogram Equalization) to enhance image quality and improve particle visibility.
+  - Handles different types of images, including those with varying resolutions and background noise.
+
+- **Visualization**:
+  - **Particle Visualization**: Plots all detected particles and highlights their centroids for easy interpretation.
+  - **Closest Pair Visualization**: Optionally, highlights the closest pair of particles and draws a line between them to visualize the minimum distance.
+  - **Triangular Mesh**: Visualizes the particles' relationships using Delaunay triangulation, showing how particles are connected in the form of a mesh.
+  - **Customizable Plots**: Provides the flexibility to adjust the display, including axis labels, gridlines, and legends for better presentation.
+
+- **Metrics Calculation**:
+  - **Closest Pair of Particles**: Calculates the distance between the closest pair of particles based on their centroids and visualizes the result.
+  - **Scalable Distance Calculations**: Capable of handling large sets of particles and computing their distances efficiently.
+  - **Dynamic Updates**: The particle distance and mesh updates in real time as new images are processed.
+
+- **Extensibility**:
+  - Designed in a modular way, allowing easy extension or integration into other projects.
+  - The `Particle` and `ParticleCalculator` classes can be used independently for particle detection and distance analysis, respectively.
+
+- **Sample Image Processing**:
+  - Can handle multiple sample images in a batch process, making it suitable for large-scale analyses where consistency across multiple images is necessary.
+  - Ability to configure image paths for easy integration into different workflows.
+
+- **Scale Calculation**:
+  - **Image Calibration**: Computes the scale of images based on a reference image with a known physical size.
+  - Adjusts the measurements and outputs distances in user-defined units (e.g., micrometers).
 
 ---
 
