@@ -1,0 +1,42 @@
+{
+    "particle_generator": {
+        "output_files": {
+            "small": "data/particles_100.csv",
+            "medium": "data/particles_1000.csv",
+            "large": "data/particles_10000.csv"
+        },
+        "num_particles": {
+            "small": 100,
+            "medium": 1000,
+            "large": 10000
+        },
+        "x_range": [
+            -10,
+            10
+        ],
+        "y_range": [
+            -10,
+            10
+        ],
+        "random_seed": 42
+    },
+    "particle_plotter": {
+        "figsize": [
+            10,
+            8
+        ],
+        "particle_color": "blue",
+        "particle_size": 30,
+        "closest_color": "red",
+        "closest_line_style": "--",
+        "closest_point_size": 60,
+        "grid": true,
+        "grid_style": ":",
+        "axis_limits": [
+            -11,
+            11,
+            -11,
+            11
+        ]
+    }
+}
