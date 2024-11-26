@@ -12,19 +12,19 @@ Key highlights include:
 - **Scalability**: Easily extendable to handle new data formats, more complex images, or additional particle metrics.
 
 
-<!-- <p align="center">
-  <img src="data\images\contours_and_centroids.png" alt="contours and centroids" width="50%" />
+<p align="center">
+  <img src="data\images\contours_and_centroids.png" alt="contours and centroids" width="70%" />
 </p>
 
 <p align="center">
-  <img src="data\images\particles_detected.png" alt="particles detected" width="50%" />
-</p> -->
+  <img src="data\images\particles_detected.png" alt="particles detected" width="70%" />
+</p>
 
 
-<div style="display: flex; justify-content: space-between; width: 100%;">
+<!-- <div style="display: flex; justify-content: space-between; width: 100%;">
   <img src="data/images/contours_and_centroids.png" alt="Ejemplo 1" style="height: 350px; width: auto; max-width: 50%; object-fit: contain;" />
   <img src="data/images/particles_detected.png" alt="Ejemplo 2" style="height: 350px; width: auto; max-width: 50%; object-fit: contain;" />
-</div>
+</div> -->
 
 
 
