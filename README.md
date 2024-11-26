@@ -22,9 +22,10 @@ Key highlights include:
 
 
 <div style="display: flex; justify-content: space-between; width: 100%;">
-  <img src="data\images\contours_and_centroids.png" alt="Ejemplo 1" style="height: 350px; width: 48%; object-fit: contain;" />
-  <img src="data\images\particles_detected.png" alt="Ejemplo 2" style="height: 350px; width: 48%; object-fit: contain;" />
+  <img src="data/images/contours_and_centroids.png" alt="Ejemplo 1" style="height: 350px; width: auto; max-width: 50%; object-fit: contain;" />
+  <img src="data/images/particles_detected.png" alt="Ejemplo 2" style="height: 350px; width: auto; max-width: 50%; object-fit: contain;" />
 </div>
+
 
 
 ---
