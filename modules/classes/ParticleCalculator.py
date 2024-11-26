@@ -6,19 +6,19 @@ from scipy.spatial import Delaunay
 
 class ParticleCalculator:
     """
-    Clase para realizar cálculos y análisis sobre partículas.
+    Class to perform calculations and analysis on particles.
     """
 
     def __init__(self, particles):
         """
-        Inicializa la clase con las partículas a analizar.
+        Initializes the class with the particles to be analyzed.
 
         Args:
-            particles: Objeto que contiene la lista de partículas y sus atributos asociados.
+            particles: object containing the list of particles and their associated attributes.
         """
         if not hasattr(particles, "particle_list"):
             raise AttributeError(
-                "El objeto 'particles' debe tener un atributo 'particle_list'."
+                "The 'particles' object must have a 'particle_list' attribute."
             )
 
         self.particles = particles
@@ -27,18 +27,18 @@ class ParticleCalculator:
 
     def __repr__(self):
         """
-        Representación en cadena de la clase ParticleCalculator.
+        Chain representation of the ParticleCalculator class.
         """
-        return f"ParticleCalculator con {len(self.particles.particle_list)} partículas."
+        return f"ParticleCalculator with {len(self.particles.particle_list)} particles."
 
     def plot_particles(self, show_closest=False, show_mesh=False):
         """
-        Grafica las partículas y, opcionalmente, resalta el par más cercano
-        y muestra una malla triangular que conecta las partículas.
+        Plots the particles and optionally highlights the closest pair and displays a triangular mesh connecting the particles.
+        and displays a triangular mesh connecting the particles.
 
         Args:
-            show_closest (bool): Si True, muestra el par más cercano y la línea entre ellos.
-            show_mesh (bool): Si True, muestra una malla de triángulos entre todas las partículas.
+            show_closest (bool): if True, shows the closest pair and the line between them.
+            show_mesh (bool): If True, displays a triangle mesh between all particles.
         """
         x_coords = [p.x for p in self.particles.particle_list]
         y_coords = [p.y for p in self.particles.particle_list]
@@ -46,7 +46,7 @@ class ParticleCalculator:
         plt.figure(figsize=(10, 8))
 
         # Graficar todas las partículas
-        plt.scatter(x_coords, y_coords, c="blue", s=20, label="Partículas")
+        plt.scatter(x_coords, y_coords, c="blue", s=10, label="Particles")
 
         # Generar malla triangular si se solicita
         if show_mesh:
@@ -59,19 +59,19 @@ class ParticleCalculator:
                     [points[simplex[0]][0], points[simplex[1]][0]],
                     [points[simplex[0]][1], points[simplex[1]][1]],
                     c="green",
-                    linewidth=0.5,
+                    linewidth=0.2,
                 )
                 plt.plot(
                     [points[simplex[1]][0], points[simplex[2]][0]],
                     [points[simplex[1]][1], points[simplex[2]][1]],
                     c="green",
-                    linewidth=0.5,
+                    linewidth=0.2,
                 )
                 plt.plot(
                     [points[simplex[2]][0], points[simplex[0]][0]],
                     [points[simplex[2]][1], points[simplex[0]][1]],
                     c="green",
-                    linewidth=0.5,
+                    linewidth=0.2,
                 )
 
         # Si se debe mostrar el par más cercano y existe uno
@@ -82,17 +82,15 @@ class ParticleCalculator:
                 [p1.y, p2.y],
                 c="red",
                 linestyle="--",
-                label="Par más cercano",
+                label="Closest pair",
             )
-            plt.scatter(
-                [p1.x, p2.x], [p1.y, p2.y], c="red", s=20, label="Pareja más cercana"
-            )
+            plt.scatter([p1.x, p2.x], [p1.y, p2.y], c="red", s=15, label="Closest pair")
 
         # Configuración de ejes
         plt.gca().invert_yaxis()  # Invertir eje Y para que crezca hacia arriba
-        plt.title("Partículas detectadas")
-        plt.xlabel("Coordenada X (um)")
-        plt.ylabel("Coordenada Y (um)")
+        plt.title("Particles detected")
+        plt.xlabel("Coordinate X (um)")
+        plt.ylabel("Coordinate Y (um)")
         plt.legend()
         plt.grid(True)
         plt.axis("equal")
@@ -100,14 +98,14 @@ class ParticleCalculator:
 
     def find_closest_pair(self):
         """
-        Encuentra el par de partículas que están a la menor distancia entre sí
-        y lo almacena en self.closest_pair.
+        Finds the pair of particles that are at the smallest distance from each other
+        and stores it in self.closest_pair.
 
         Returns:
-            float: La distancia mínima encontrada.
+            float: the minimum distance found.
         """
         if len(self.particles.particle_list) < 2:
-            print("Se necesitan al menos dos partículas para calcular la distancia.")
+            print("At least two particles are needed to calculate the distance.")
             self.closest_pair = []  # Resetear por si no hay suficientes partículas
             return None
 

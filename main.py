@@ -16,14 +16,14 @@ processor_ref.calculate_scale(
 # Lista de rutas de las imágenes de muestra
 sample_paths = [
     "data/sample1.png",
-    "data/sample2.png",
-    "data/sample3.png",
-    "data/sample4.png",
+    # "data/sample2.png",
+    # "data/sample3.png",
+    # "data/sample4.png",
 ]
 
 # Iterar sobre las imágenes de muestra
 for sample_path in sample_paths:
-    print(f"\nProcesando: {sample_path}")
+    print(f"\nProcessing: {sample_path}")
 
     # Instanciar el procesador para la imagen actual
     processor_sample = ImageProcessor(sample_path)
@@ -39,5 +39,5 @@ for sample_path in sample_paths:
     calculator.find_closest_pair()
 
     # Mostrar resultados
-    print(f"Distancia mínima: {calculator.min_distance:.2f} um")
+    print(f"Minimum distance: {calculator.min_distance:.2f} um")
     calculator.plot_particles(show_closest=True, show_mesh=True)

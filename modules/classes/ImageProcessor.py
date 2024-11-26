@@ -6,7 +6,7 @@ from modules.classes.Particle import Particle
 
 class Image:
     """
-    Clase de la Imagen
+    Image Class
     """
 
     # CONSTRUCTOR
@@ -20,7 +20,7 @@ class Image:
 
 class ParticleList:
     """
-    Clase para las Particulas encontradas
+    Class for the found particles
     """
 
     # CONSTRUCTOR
@@ -32,7 +32,7 @@ class ParticleList:
 
 class ImageProcessor:
     """
-    Procesa imágenes para detectar partículas y calcular sus propiedades.
+    Class to process images to detect particles and calculate their properties.
     """
 
     # CONSTRUCTOR
@@ -46,12 +46,12 @@ class ImageProcessor:
 
     def visualize_step(self, image, title="Step", show_step=True):
         """
-        Muestra una visualización del paso dado en el proceso de la imagen.
+        Displays a visualization of the step taken in the image process.
 
         Args:
-            image (ndarray): Imagen a visualizar.
-            title (str): Título de la ventana de visualización.
-            show_step (bool): Si es True, muestra la visualización.
+            image (ndarray): image to display.
+            title (str): Title of the visualization window.
+            show_step (bool): If True, shows the visualization.
         """
         if show_step:
             cv.imshow(title, image)
@@ -60,26 +60,26 @@ class ImageProcessor:
 
     def calculate_scale(self, real_length, **kwargs):
         """
-        Calcula la escala de la imagen basándose en la barra de referencia.
+        Calculates the image scale based on the reference bar.
 
         Args:
-            real_length (float): Longitud real de la barra en unidades físicas (um).
-            kwargs: Opciones para visualizar pasos intermedios:
-                - show_original (bool): Muestra la imagen original.
-                - show_binary (bool): Muestra la imagen binarizada.
-                - show_contours (bool): Muestra los contornos detectados.
-                - show_bar (bool): Muestra la barra de referencia identificada.
+            real_length (float): real length of the bar in physical units (um).
+            kwargs: Options to display intermediate steps:
+                - show_original (bool): show the original image.
+                - show_binary (bool): Displays the binarized image.
+                - show_contours (bool): Shows the detected contours.
+                - show_bar (bool): Displays the identified reference bar.
         """
 
         def find_reference_bar(contours):
             """
-            Identifica el contorno que corresponde a la barra de referencia.
+            Identifies the outline that corresponds to the reference bar.
 
             Args:
-                contours (list): Lista de contornos detectados.
+                contours (list): list of detected contours.
 
             Returns:
-                np.ndarray or None: Contorno de la barra si se encuentra, None si no.
+                np.ndarray or None: Contour of the member if found, None if not.
             """
             for contour in contours:
                 x, y, w, h = cv.boundingRect(contour)
@@ -109,7 +109,7 @@ class ImageProcessor:
         # Paso 2: Binarizar la imagen
         _, binary = cv.threshold(self.image.gray, 200, 255, cv.THRESH_BINARY)
         self.visualize_step(
-            binary, title="Imagen Binarizada", show_step=options["show_binary"]
+            binary, title="Binarized Image", show_step=options["show_binary"]
         )
 
         # Paso 3: Detección de contornos
@@ -118,27 +118,27 @@ class ImageProcessor:
         cv.drawContours(contour_img, contours, -1, (0, 255, 0), 2)
         self.visualize_step(
             contour_img,
-            title="Contornos Detectados",
+            title="Contours Detected",
             show_step=options["show_contours"],
         )
 
         # Paso 4: Identificar barra de referencia
         bar_contour = find_reference_bar(contours)
         if bar_contour is None:
-            raise ValueError("No se pudo encontrar la barra de referencia.")
+            raise ValueError("The reference bar could not be found.")
 
         x, y, w, h = cv.boundingRect(bar_contour)
         bar_img = contour_img.copy()
         cv.rectangle(bar_img, (x, y), (x + w, y + h), (255, 0, 0), 2)
         self.visualize_step(
             bar_img,
-            title="Barra de Referencia Identificada",
+            title="Reference Bar Identified",
             show_step=options["show_bar"],
         )
 
         # Paso 5: Calcular la escala
         self.scale = real_length / max(w, h)
-        print(f"Escala calculada: {self.scale:.5f} um por píxel")
+        print(f"Calculated scale: {self.scale:.5f} um per pixel")
 
     def otsuS_Binarization(self):
         img = self.image.gray
@@ -212,33 +212,33 @@ class ImageProcessor:
         plt.figure(figsize=(10, 5))
         plt.subplot(1, 2, 1)
         plt.imshow(contoured_image)
-        plt.title("Contornos")
+        plt.title("Contours")
         plt.axis("off")
 
         plt.subplot(1, 2, 2)
         plt.imshow(centroid_image)
-        plt.title("Centroides")
+        plt.title("Centroids")
         plt.axis("off")
 
         plt.show()
 
     def convert_centroids_to_particles(self):
         """
-        Convierte los centroides en instancias de la clase Particle y las guarda en self.particles.particle_list.
+        Converts the centroids into instances of the Particle class and stores them in self.particles.particle_list.
         """
         if not hasattr(self, "particles"):
             raise AttributeError(
-                "El objeto debe tener un atributo 'particles' para almacenar la lista de partículas."
+                "The object must have a 'particles' attribute to store the list of particles."
             )
 
         if not hasattr(self.particles, "centroids"):
             raise AttributeError(
-                "El atributo 'particles' debe tener una lista de centroides en 'centroids'."
+                "The 'particles' attribute must have a list of centroids in 'centroids'."
             )
 
         if not hasattr(self, "scale"):
             raise AttributeError(
-                "El objeto debe tener un atributo 'scale' que indique la escala en um/pixel."
+                "The object must have a 'scale' attribute indicating the scale in um/pixel."
             )
 
         self.particles.particle_list = []  # Inicializar lista para las partículas
