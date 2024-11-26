@@ -18,23 +18,68 @@ This project is a Python-based application designed to analyze particles in an i
 
 ## Installation
 
-1. Clone the repository:
+To set up this project, ensure you have Python and Git installed on your system. Follow the steps below:
+
+### Prerequisites
+
+1. **Install Python**:
+   - Download Python from [python.org](https://www.python.org/downloads/).
+   - Ensure you check the box *Add Python to PATH* during installation.
+   - Verify the installation:
+     ```bash
+     python --version
+     ```
+     or, depending on your system:
+     ```bash
+     python3 --version
+     ```
+
+2. **Install Git**:
+   - Download Git from [git-scm.com](https://git-scm.com/).
+   - Follow the installation instructions for your operating system.
+   - Verify the installation:
+     ```bash
+     git --version
+     ```
+
+---
+
+### Steps to Set Up the Project
+
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/AleCornejoR/particle-proxy-dist.git
    cd particle-proxy-dist
    ```
 
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Linux/Mac
-   venv\Scripts\activate     # On Windows
-   ```
+2. **Create and activate a virtual environment**:
+   - On Linux/Mac:
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+   - On Windows:
+     ```bash
+     python -m venv venv
+     venv\Scripts\activate
+     ```
 
-3. Install the required Python libraries:
+3. **Install the required Python libraries**:
    ```bash
    pip install -r requirements.txt
    ```
+
+4. **Verify the setup**:
+   - Ensure that the necessary dependencies (like OpenCV, NumPy, Matplotlib, and SciPy) are installed:
+     ```bash
+     pip list
+     ```
+   - Run a quick test to ensure the environment works:
+     ```bash
+     python main.py
+     ```
+   - If you encounter issues, ensure the correct Python version (3.8 or later) is installed and used in the virtual environment.
+
 
 ---
 
