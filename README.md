@@ -11,6 +11,22 @@ Key highlights include:
 - **Triangular Mesh Visualization**: Uses Delaunay triangulation to visualize the relationships between particles in a mesh format.
 - **Scalability**: Easily extendable to handle new data formats, more complex images, or additional particle metrics.
 
+
+<!-- <p align="center">
+  <img src="data\images\contours_and_centroids.png" alt="contours and centroids" width="50%" />
+</p>
+
+<p align="center">
+  <img src="data\images\particles_detected.png" alt="particles detected" width="50%" />
+</p> -->
+
+
+<div style="display: flex; justify-content: space-between; width: 100%;">
+  <img src="data\images\contours_and_centroids.png" alt="Ejemplo 1" style="height: 350px; width: 48%; object-fit: contain;" />
+  <img src="data\images\particles_detected.png" alt="Ejemplo 2" style="height: 350px; width: 48%; object-fit: contain;" />
+</div>
+
+
 ---
 
 ## Features
