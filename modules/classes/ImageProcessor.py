@@ -1,5 +1,5 @@
 import cv2 as cv
-import numpy as np
+import os
 from matplotlib import pyplot as plt
 from modules.classes.Particle import Particle
 
@@ -36,27 +36,62 @@ class ImageProcessor:
     """
 
     # CONSTRUCTOR
-    def __init__(self, image_path):
+    def __init__(self, image_path, figures_path, info_path):
         self.image_path = image_path
+        self.figures_path = figures_path
+        self.info_path = info_path
         self.image = Image(self.image_path)
 
         self.scale: 1.0  # Escala inicial predeterminada (en um por píxel)
 
         self.particles = ParticleList()
 
+    def save_image(self, image, filename):
+        """
+        Saves an image in the `figures_path` folder with a unique name.
+
+        If the file already exists, an incremental numeric suffix (_1, _2, etc.) is added to it.
+
+        Args:
+            image (ndarray): The image to be saved.
+            filename (str): Base name of the file (includes extension, for example, 'image.png').
+        """
+        if not self.figures_path:
+            raise ValueError("[!] The path of figures is not defined.")
+
+        # Separar el nombre base y la extensión del archivo
+        base_name, ext = os.path.splitext(filename)
+        file_path = os.path.join(self.figures_path, filename)
+        counter = 1
+        file_path = os.path.join(self.figures_path, f"{base_name}_{counter}{ext}")
+
+        # Buscar un nombre único
+        while os.path.exists(file_path):
+            file_path = os.path.join(self.figures_path, f"{base_name}_{counter}{ext}")
+            counter += 1
+
+        # Guardar la imagen
+        cv.imwrite(file_path, image)
+        print(f"[*] Image saved: {file_path}")
+
     def visualize_step(self, image, title="Step", show_step=True):
         """
         Displays a visualization of the step taken in the image process.
 
         Args:
-            image (ndarray): image to display.
+            image (ndarray): Image to display. Assumes the image is in BGR format if using OpenCV.
             title (str): Title of the visualization window.
             show_step (bool): If True, shows the visualization.
         """
         if show_step:
-            cv.imshow(title, image)
-            cv.waitKey(0)
-            cv.destroyAllWindows()
+            # Convert BGR to RGB if the image is in OpenCV format (common for OpenCV images)
+            if image.ndim == 3 and image.shape[2] == 3:  # Check if it's a color image
+                image = image[:, :, ::-1]  # Convert BGR to RGB
+            plt.figure(figsize=(8, 6))
+            plt.imshow(image, cmap="gray" if image.ndim == 2 else None)
+            plt.title(title)
+            plt.axis("off")  # Turn off axis for cleaner visualization
+            plt.show()
 
     def calculate_scale(self, real_length, **kwargs):
         """
@@ -105,22 +140,25 @@ class ImageProcessor:
             title="Imagen Original",
             show_step=options["show_original"],
         )
+        self.save_image(self.image.original, "original_reference.png")
 
         # Paso 2: Binarizar la imagen
         _, binary = cv.threshold(self.image.gray, 200, 255, cv.THRESH_BINARY)
         self.visualize_step(
             binary, title="Binarized Image", show_step=options["show_binary"]
         )
+        self.save_image(binary, "binarized_reference.png")
 
         # Paso 3: Detección de contornos
         contours, _ = cv.findContours(binary, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
-        contour_img = self.image.gray
-        cv.drawContours(contour_img, contours, -1, (0, 255, 0), 2)
+        contour_img = self.image.original.copy()
+        cv.drawContours(contour_img, contours, -1, (255, 0, 0), 2)
         self.visualize_step(
             contour_img,
             title="Contours Detected",
             show_step=options["show_contours"],
         )
+        self.save_image(contour_img, "contours_reference.png")
 
         # Paso 4: Identificar barra de referencia
         bar_contour = find_reference_bar(contours)
@@ -128,17 +166,18 @@ class ImageProcessor:
             raise ValueError("The reference bar could not be found.")
 
         x, y, w, h = cv.boundingRect(bar_contour)
-        bar_img = contour_img.copy()
-        cv.rectangle(bar_img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+        bar_img = self.image.original.copy()
+        cv.rectangle(bar_img, (x, y), (x + w, y + h), (0, 0, 255), 2)
         self.visualize_step(
             bar_img,
             title="Reference Bar Identified",
             show_step=options["show_bar"],
         )
+        self.save_image(bar_img, "bar_reference.png")
 
         # Paso 5: Calcular la escala
         self.scale = real_length / max(w, h)
-        print(f"Calculated scale: {self.scale:.5f} um per pixel")
+        print(f"[*] Calculated scale: {self.scale:.5f} um per pixel")
 
     def otsuS_Binarization(self):
         img = self.image.gray
@@ -164,6 +203,7 @@ class ImageProcessor:
         th_combined = cv.bitwise_or(th3, th_manual)
 
         self.image.th = th_combined
+        self.save_image(th_combined, "otsu_combined.png")
 
         return th_combined
 
@@ -189,7 +229,7 @@ class ImageProcessor:
 
         return contours, centroids
 
-    def visualize_contours_and_centroids(self):
+    def visualize_contours_and_centroids(self, show_plot=False):
         centroids = self.particles.centroids
         contours = self.particles.contours
         img = self.image.gray  # Imagen en escala de grises original
@@ -208,19 +248,23 @@ class ImageProcessor:
                 cx, cy = centroid
                 cv.circle(centroid_image, (cx, cy), 1, (0, 255, 0), -1)
 
-        # Mostrar las imágenes
-        plt.figure(figsize=(10, 5))
-        plt.subplot(1, 2, 1)
-        plt.imshow(contoured_image)
-        plt.title("Contours")
-        plt.axis("off")
+        self.save_image(contoured_image, "contoured_image.png")
+        self.save_image(centroid_image, "centroid_image.png")
 
-        plt.subplot(1, 2, 2)
-        plt.imshow(centroid_image)
-        plt.title("Centroids")
-        plt.axis("off")
+        if show_plot:
+            # Mostrar las imágenes
+            plt.figure(figsize=(10, 5))
+            plt.subplot(1, 2, 1)
+            plt.imshow(contoured_image)
+            plt.title("Contours")
+            plt.axis("off")
 
-        plt.show()
+            plt.subplot(1, 2, 2)
+            plt.imshow(centroid_image)
+            plt.title("Centroids")
+            plt.axis("off")
+
+            plt.show()
 
     def convert_centroids_to_particles(self):
         """

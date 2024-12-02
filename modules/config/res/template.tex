@@ -1,0 +1,27 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
+\title{Resultados de Análisis de Imágenes}
+\author{Particle Analysis System}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Resumen}
+El análisis de imágenes detectó partículas en {{SAMPLE_COUNT}} muestras. 
+A continuación, se presentan los resultados.
+
+\section*{Resultados}
+{{RESULTS_TABLE}}
+
+\section*{Imágenes}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/{{IMAGE_NAME}}}
+\caption{Vista general de las partículas detectadas.}
+\end{figure}
+
+\end{document}
